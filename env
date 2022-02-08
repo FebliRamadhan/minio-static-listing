@@ -1,0 +1,5 @@
+PORT=
+minio_endpoint=
+minio_accessKey=
+minio_secretKey=
+minio_url=

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="">
+
+    <title>Storage Views</title>
+  
+	<!-- Vendors Style-->
+	<link rel="stylesheet" href="css/vendors_css.css">
+	  
+	<!-- Style-->  
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/skin_color.css">	
+
+</head>
+<body class="hold-transition light-skin theme-fruit fixed">
+
+	<div class="wrapper" style="padding: 6rem; overflow: scroll;">
+		<section class="content">			
+            <div class="row fx-element-overlay">
+                <% for(let i=0; i<data.length; i++) { %>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="box">
+                    <div class="fx-card-item">
+                        <div class="fx-card-avatar fx-overlay-1"> <iframe src="<%= data[i].url %>"></iframe>
+                            <div class="fx-overlay scrl-up">						
+                                <ul class="fx-info">
+                                    <li><a class="btn btn-outline image-popup-vertical-fit"  target="_blank" href="<%= data[i].url %>"><i class="mdi mdi-search-web"></i></a></li>
+									<li><a class="btn btn-outline"  onclick="clipBoard('<%= data[i].url %>')"><i class="mdi mdi-content-copy"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="fx-card-content text-start">							
+                            <div class="product-text">
+                                <h4 class="box-title mb-0"><%= data[i].name %></h4>
+                                <small class="text-muted db"><%= data[i].lastModified %></small>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- /.box -->				  
+                </div>
+                <% } %>
+            </div>
+        </section>
+	</div>   
+    <script>
+        function clipBoard(e) {
+            var copyText = document.createElement("input");
+            document.body.appendChild(copyText);
+            copyText.setAttribute("id", "copyText");
+            document.getElementById("copyText").value= e;
+            copyText.select();
+            document.execCommand("copy");
+            document.getElementById("copyText").type="hidden";
+            alert("Copied to clipboard");
+        }
+    </script>
+</body>
+</html>
