@@ -1,11 +1,14 @@
 require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 const minio = require('minio');
 const PORT = process.env.PORT;
 
 //static files
 app.use(express.static('views'));
+
+app.use(morgan('combined'));
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
