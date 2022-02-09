@@ -19,7 +19,7 @@ const minioClient = new minio.Client({
     secretKey: process.env.minio_secretKey,
 });
 
-app.get('/', (req, res) => {
+app.get('/views', (req, res) => {
     minioClient.listBuckets((err, buckets) => {
         if (err) {
             res.status(400).json({
