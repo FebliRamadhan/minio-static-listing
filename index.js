@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const url = require('url');
 const app = express();
 const minio = require('minio');
 const PORT = process.env.PORT;
@@ -20,17 +21,27 @@ const minioClient = new minio.Client({
 });
 
 app.get('/', (req, res) => {
-    minioClient.listBuckets((err, buckets) => {
+    minioClient.listBuckets(async (err, buckets) => {
         if (err) {
             res.status(400).json({
                 message: 'Something went wrong'
             });
         } else {
+            let mapBucket = [];
+            await Promise.all(
+                buckets.map(async (item) => {
+                    let policy = await minioClient.getBucketPolicy(item['name']);
+                    policy = JSON.parse(policy);
+                    if(policy.Statement.length > 0) {
+                        mapBucket.push(item);
+                    }
+                }
+            ));
             res.render('pages/folders', {
-                data: buckets
+                data: mapBucket
             });
         }
-    });  
+    });
 });
 
 app.get('/list', async (req, res) => {
@@ -54,6 +65,7 @@ app.get('/list', async (req, res) => {
             data: result
         });
     });
+
     object.on('error', err => {
         res.status(400).json({
             message: 'Something went wrong'
@@ -61,4 +73,6 @@ app.get('/list', async (req, res) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+app.listen(PORT,
+    () => console.log(`Server listening on port: ${PORT}`)
+);
